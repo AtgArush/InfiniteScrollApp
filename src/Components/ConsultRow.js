@@ -17,7 +17,6 @@ export default function ConsultRow({item = {}, key, colors, theme}) {
         borderRadius: 15
       }}
       key={key}>
-      {/* <Text>{item.bio}</Text> */}
       <View
         style={{
           flexDirection: 'row',
@@ -121,13 +120,7 @@ export default function ConsultRow({item = {}, key, colors, theme}) {
           marginVertical: 10,
           alignItems: 'center',
         }}>
-        <Image
-          source={ 
-            theme == "light"? imagePath.mailLight : imagePath.mailDark
-          }
-          style={ theme == "light" ? {width: 30, height: 30, marginRight: 10, padding: 2} : {width: 35, height: 35, marginRight: 5} }
-        />
-        {/* <Text numberOfLines={1}>{item.email.substring(0, 25)}...</Text> */}
+        <Image source = {imagePath.mailIcon} style = {{width: 40, height: 40, marginRight: 5,  tintColor: colors.apiTheme}} /> 
         <Text numberOfLines={1} style={{marginTop: -4, color: colors.themeText, fontSize: 15}}>
           {item.email.length > 20
             ? `${item.email.substring(0, 15)}...`
@@ -139,36 +132,19 @@ export default function ConsultRow({item = {}, key, colors, theme}) {
           marginHorizontal: 15,
           flexDirection: 'row',
           justifyContent: 'space-between',
-          // marginVertical: 5,
           borderTopColor: colors.textGrey,
           borderTopWidth: 0.5,
-          paddingVertical: 10,
-          paddingHorizontal: 15,
+          paddingVertical: 7,
+          paddingHorizontal: 5,
         }}>
         <View style={{flexDirection: 'row'}}>
           <Image
-            source={ 
-              theme == "light"? imagePath.heartLight : imagePath.heartDark
-            }  
-            style={{width: 25, height: 25, resizeMode: 'contain'}}
-            style={ theme == "light" ? {
-              width: 25, height: 25, resizeMode: 'contain'} : 
-              {width: 30,
-                height: 30,
-                marginTop: 0, marginRight: 5} }
-  
+          source = {imagePath.heartIcon}
+          style = {{width: 32, height: 32, resizeMode: 'contain',  tintColor: colors.apiTheme, marginLeft: 5, marginTop: -2}}
           />
-          <Image
-          source={ 
-            theme == "light"? imagePath.messageLight : imagePath.messageDark
-          }
-          style = {{
-            width: 27,
-            height: 27,
-            resizeMode: 'contain',
-            marginTop: 0,
-            marginLeft: 15, borderRadius: 5}}
-          />
+          <Image source = {imagePath.messageIcon} style = {{width: 32,
+            height: 32, marginLeft: 10,
+            resizeMode: 'contain', tintColor: colors.apiTheme}} />
         </View>
         <View>
           <Button
@@ -179,6 +155,7 @@ export default function ConsultRow({item = {}, key, colors, theme}) {
               paddingHorizontal: 25,
               paddingVertical: 5,
               borderRadius: 5,
+              marginTop: 2
             }}
           />
         </View>

@@ -1,7 +1,7 @@
 import types from '../types';
 import store from '../store';
-import { apiPost } from '../../utils/utils';
-import { GET_USER } from '../../config/urls';
+import {apiGet, apiPost} from '../../utils/utils';
+import {GET_USER, SEARCH_USER} from '../../config/urls';
 // import { reject } from 'lodash';
 const {dispatch} = store;
 
@@ -33,17 +33,26 @@ export const fetchData = () => {
 };
 
 export const loadData = data => {
-    return new Promise((resolve, reject) => {
-        apiPost(GET_USER, {searchType: 'LEADERBOARD', limit: "5" , skip: data.skip})
-        .then((res)=>{
-            dispatch({
-                type: types.LOAD_MORE_DATA,
-                payload: res.data
-            })
-            resolve(res)
-        })
-        .catch((error)=> {
-            reject(error)
-        })    
+  return new Promise((resolve, reject) => {
+    apiPost(GET_USER, {
+      searchType: 'LEADERBOARD',
+      limit: '5',
+      skip: data.skip,
     })
+      .then(res => {
+        console.log(res, 'consult Actions Res');
+        resolve(res);
+      })
+      .catch(error => {
+        console.log(error, 'consult Actions Error');
+        reject(error);
+      });
+  });
+};
+
+export const searchUser = searchString => {
+  console.log(searchString);
+  let getUrl = SEARCH_USER + `?name=${searchString}`;
+  console.log(getUrl);
+  return apiGet(getUrl);
 };

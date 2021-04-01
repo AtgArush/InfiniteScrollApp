@@ -9,22 +9,21 @@ const Stack = createStackNavigator()
 
 const Routes = props => {
 
-    let userData = props.data.userData
+    let userData = props.auth.userData;
         return (
-            <NavigationContainer>
-                <Stack.Navigator
-                screenOptions = {{
-                    headerShown: false
-                }}
-                >
-                    {!userData ? AuthStack() : MainStack() }
-                </Stack.Navigator>
-            </NavigationContainer>
-        )
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}>
+              {!!userData ? MainStack() : AuthStack()}
+            </Stack.Navigator>
+          </NavigationContainer>
+        );
     }
 
 const mapStateToProps = ({auth}) => ({
-    data: auth
-})
+  auth: auth,
+});
 
 export default connect(mapStateToProps)(Routes)

@@ -5,8 +5,8 @@ const intialState = {
 };
 
 export default function (state = intialState, action) {
-  let cardList = state.cardList;
-
+  let {cardList} = state;
+  console.log(state);
   switch (action.type) {
     case types.GET_DATA_FROM_API:
       cardList = [...action.payload];
@@ -15,18 +15,21 @@ export default function (state = intialState, action) {
         cardList: cardList,
       };
     case types.LOAD_MORE_DATA:
-      cardList = [...cardList, ...action.payload];
+      console.log(cardList);
+      console.log(cardList.length);
+      // console.log(...action.payload);
+      // cardList = [...cardList, ...action.payload];
       return {
         ...state,
-        cardList: cardList,
+        // cardList: cardList,
       };
-      case types.LOGOUT:
-        // cardList = [...cardList, ...action.payload];
-        return {
-          ...state,
-          cardList: action.payload,
-        };
-  
+    case types.LOGOUT:
+      // cardList = [...cardList, ...action.payload];
+      return {
+        ...state,
+        cardList: action.payload,
+      };
+
     default:
       return {
         ...state,

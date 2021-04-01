@@ -14,22 +14,24 @@ export const Login = data => {
     return new Promise((resolve, reject) => {
         apiPost( "https://api.talktier.com/user/v1/loginSignupOtp", data)
         .then((res)=>{
+            console.log(res, "Auth")
             resolve(res)
         })
         .catch((error)=>{
+            console.log(error, "Auth")
             reject(error)
         })
     })
 }
 
 export const logout = () => {
-    saveUserData(null)
-    clearUserData()
-    dispatch({
-        type: types.LOGOUT,
-        payload: null
-    })
-}
+  alert();;
+    clearUserData();
+  dispatch({
+    type: types.LOGOUT,
+    payload: null,
+  });
+};
 
 export const verifyOtp = data => {
     return new Promise((resolve, reject) => {

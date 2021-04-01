@@ -22,9 +22,9 @@ export default class App extends Component {
     getUserData()
     .then((res)=> {
       actions.saveUserData(res);
-      setTimeout(() => {
+      // setTimeout(() => {
         SplashScreen.hide();
-      }, 1000);
+      // }, 1000);
     })
     .catch((error)=>console.log(error))
   }

@@ -23,14 +23,16 @@ const TextInputWithLabel = ({
   secureTextEntry = false,
   rightIcon,
   customTextStyle = {},
-  placeholder="",
+  placeholder = '',
   onPress = () => {},
   onPressRightIcon = () => {},
   onFocus = () => {},
   onBlur = () => {},
+  themeColor = '#45c9cb',
+  textStyle = {},
   ...rest
 }) => {
-  let currentColor = active ? colors.themeColor : colors.textGrey;
+  let currentColor = active ? themeColor : colors.textGrey;
   return (
     <View style={{marginBottom: moderateScaleVertical(15)}}>
       <Text
@@ -38,7 +40,8 @@ const TextInputWithLabel = ({
           ...commonStyles.fontSize14,
           color: currentColor,
           marginBottom: moderateScaleVertical(7),
-          fontSize: 25
+          fontSize: 25,
+          ...textStyle,
         }}>
         {label}
       </Text>
@@ -46,15 +49,16 @@ const TextInputWithLabel = ({
         <TextInput
           {...rest}
           placeholder={placeholder}
-          placeholderTextColor = {currentColor}
+          placeholderTextColor={currentColor}
           secureTextEntry={secureTextEntry}
           onFocus={onFocus}
-          onBlur = {onBlur}
+          onBlur={onBlur}
           style={{
             flex: 1,
             ...styles.textInput,
             borderColor: currentColor,
             ...customTextStyle,
+            color: themeColor,
           }}
           onChangeText={onChangeText}
           value={value}
@@ -63,7 +67,11 @@ const TextInputWithLabel = ({
           <TouchableOpacity
             hitSlop={hitSlopProp}
             onPress={onPressRightIcon}
-            style={{alignItems: 'center', justifyContent: 'center',marginLeft:6}}>
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 6,
+            }}>
             <Image source={rightIcon} />
           </TouchableOpacity>
         )}

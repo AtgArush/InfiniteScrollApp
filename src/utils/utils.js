@@ -8,6 +8,7 @@ import {showError} from './helperFunctions';
 export async function getHeaders() {
   // alert("HEADER")
   let userData = await AsyncStorage.getItem('userData');
+  console.log(userData, '//Get Header Data');
   if (userData) {
     userData = JSON.parse(userData);
     return {
@@ -85,15 +86,15 @@ export async function apiReq(
     axios[method](endPoint, data, {headers})
       .then((result) => {
         const {data} = result;
-
+        console.log(result, 'success');
         if (data.status === false) {
           return rej(data);
         }
-
         return res(data);
       })
       .catch((error) => {
-        // console.log(error);
+        
+        console.log(error);
         // console.log(error && error.response, 'the error respne');
         // if (error && error.response && error.response.status === 401) {
         //   const {dispatch} = store;
