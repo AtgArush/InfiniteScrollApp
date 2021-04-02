@@ -22,6 +22,11 @@ const styles = props => {
       tintColor: colors.apiTheme,
       marginLeft: 15,
     },
+    toggleImage: {
+      height: 45,
+      width: 45,
+      tintColor: colors.apiTheme,
+    },
     themeToggleBox: {
       position: 'absolute',
       top: 10,

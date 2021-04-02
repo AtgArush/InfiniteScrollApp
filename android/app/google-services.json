@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "150832579353",
+    "project_id": "infinitescroll-37279",
+    "storage_bucket": "infinitescroll-37279.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150832579353:android:ce172a4fc2fcc234d87b88",
+        "android_client_info": {
+          "package_name": "com.infinitescroll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150832579353-2hgnb247t8km750plgqdhmbl7nfed7ia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpOr9g__2MDjmu9FxdlKtIxNm9-NhHCPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150832579353-2hgnb247t8km750plgqdhmbl7nfed7ia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

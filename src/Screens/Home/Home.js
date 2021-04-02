@@ -221,7 +221,6 @@ class Home extends Component {
 
           <Modal
             animationType="slide"
-            // transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
               this.setState({modalVisible: false});
@@ -246,18 +245,23 @@ class Home extends Component {
                   flexDirection: 'row',
                   flexWrap: 'wrap',
                 }}>
-                {themeColors.map(theme => {
+                {themeColors.map(themeColor => {
+                  let {theme} = this.state
                   return (
                     <TouchableOpacity
                       style={{
                         width: '45%',
                         height: '40%',
-                        backgroundColor: theme,
+                        backgroundColor: themeColor,
                         marginTop: '10%',
+                        justifyContent: "center",
+                        alignItems: "center"
                       }}
                       onPress={() =>
-                        this.toggleTheme(theme)
-                      }></TouchableOpacity>
+                        this.toggleTheme(themeColor)
+                      }>
+                        {theme == themeColor && <Image source = {imagePath.tickIcon} style = {{height: 50, width: 50}} />}
+                      </TouchableOpacity>
                   );
                 })}
               </View>

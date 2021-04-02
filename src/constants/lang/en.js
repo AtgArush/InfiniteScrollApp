@@ -30,4 +30,5 @@ export default {
   GET_DETAILS: 'Get Details',
   SEARCH_USER: 'Search User',
   PROFILE: 'Enter Name',
+  NEARBY_USERS: 'Show Nearby Users',
 };

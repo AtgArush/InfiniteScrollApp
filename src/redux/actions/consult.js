@@ -56,3 +56,11 @@ export const searchUser = searchString => {
   console.log(getUrl);
   return apiGet(getUrl);
 };
+
+export const searchNearbyUser = (long, lat) => {
+  // https://api.talktier.com/user/v1/getUserNearMe?coordinates=["0", "0"]
+  // console.log(searchString);
+  let getUrl = SEARCH_USER + `?coordinates=["${long}", "${lat}"]`;
+  console.log(getUrl);
+  return apiGet(getUrl);
+};

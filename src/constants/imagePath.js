@@ -10,8 +10,9 @@ export default {
   logGreen: require('../assets/images/logGreen.png'),
   mailIcon: require('../assets/images/cross.png'),
   messageIcon: require('../assets/images/message.png'),
-  heartIcon: require("../assets/images/heartIcon.png"),
-  home: require("../assets/images/home.png"),
-  search: require("../assets/images/searchTab.png"),
-  location: require("../assets/images/location.png")
+  heartIcon: require('../assets/images/heartIcon.png'),
+  home: require('../assets/images/home.png'),
+  search: require('../assets/images/searchTab.png'),
+  location: require('../assets/images/location.png'),
+  tickIcon: require('../assets/images/tick.png'),
 };

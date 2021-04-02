@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {connect} from 'react-redux';
 import imagePath from '../../constants/imagePath';
 import myStyles from './styles';
@@ -8,6 +15,11 @@ import TextInputWithLabel from '../../Components/TextInputWithLabel';
 import actions from '../../redux/actions';
 import ConsultRow from '../../Components/ConsultRow';
 import Loader from '../../Components/Loader';
+import Button from '../../Components/Button';
+import en from '../../constants/lang/en';
+import Geolocation from 'react-native-geolocation-service';
+import { locationPermission } from '../../utils/permissions';
+import { searchNearbyUser } from '../../redux/actions/consult';
 
 class SearchPage extends Component {
   state = {
@@ -15,11 +27,9 @@ class SearchPage extends Component {
     theme: this.props.theme.currentTheme,
     styles: myStyles(this.props.theme.theme),
     profile: [],
-    modalVisible: false,
-    themeColors: ['red', 'yellow', 'blue', 'green'],
     searchString: '',
     focus: false,
-    timeout: null,
+    searchPeople: false
   };
 
   componentDidUpdate() {
@@ -48,41 +58,19 @@ class SearchPage extends Component {
     );
   };
 
-  onChangeText = () => {
-    return value => {
-      let {timeout} = this.state;
-
-      this.setState({searchString: value}, () => {
-        if (this.state.searchString.length == 0) {
-          clearTimeout(timeout);
-          this.setState({profile: []});
-        } else {
-          clearTimeout(timeout);
-          this.setState({
-            timeout: setTimeout(() => {
-              // console.log(this.state);
-              this.searchUser();
-            }, 3000),
-          });
-        }
-      });
-    };
-  };
-
   onChangeSearch = val => {
     this.setState({searchString: val});
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout);
     }
     this.searchTimeout = setTimeout(() => {
-      this.apicall();
-    }, 600);
+      this.searchUser();
+    }, 2000);
   };
 
   searchUser = () => {
     let {searchString} = this.state;
     this.setState({isLoading: true});
-    // alert(searchString);
     actions
       .searchUser(searchString)
       .then(res => {
@@ -95,60 +83,118 @@ class SearchPage extends Component {
       });
   };
 
+  searchNearbyUsers = () => {
+    // alert()
+    locationPermission()
+    .then((res)=>{
+      if (res === "granted") {
+        // alert("granted")
+              Geolocation.getCurrentPosition(
+          (position) => {
+            let {longitude, latitude} = position.coords
+            console.log(longitude, latitude);
+            searchNearbyUser(longitude, latitude)
+            .then((res)=>{
+              console.log(res)
+              this.setState({profile: res.data})
+            })
+          },
+          (error) => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+      }
+      console.log(res)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+
   render() {
     let {
       styles,
       profile,
-      modalVisible,
-      themeColors,
       searchString,
       focus,
       isLoading,
+      searchPeople
     } = this.state;
     let {theme} = this.props.theme;
     return (
       <View style={{flex: 1}}>
         <View style={styles.navbar}>
-          <TouchableOpacity
+          <View
             style={styles.imageBox}
             onPress={() => this.setState({modalVisible: true})}>
             <Image
               source={imagePath.hamburgerIcon}
               style={styles.navbarLeftImage}
             />
-          </TouchableOpacity>
+          </View>
           <Text style={styles.navbarTopText}> {strings.SEARCH_USER} </Text>
+
+          <TouchableOpacity style={{height:50, width: 50, position: "absolute", right: 20, justifyContent:"center", alignItems:"center"}}
+          onPress={()=> this.setState({searchPeople: !searchPeople, profile: []})}
+          >
+            {/* <Text>ABCD</Text> */}
+            {/* {this.renderImage()} */}
+            {/* <Text>{searchPeople ? "Nearby users" : "search users"}</Text> */}
+            {searchPeople ? 
+            <Image style = {styles.toggleImage} source = {imagePath.location} /> : 
+            <Image style = {styles.toggleImage} source = {imagePath.search} />
+            }
+          </TouchableOpacity>
         </View>
 
         <View style={styles.bodyContainer}>
-          <View style={styles.searchBox}>
-            <TextInputWithLabel
-              label={strings.SEARCH_USER}
-              value={searchString}
-              onFocus={() => this.setState({focus: true})}
-              onBlur={() => this.setState({focus: false})}
-              active={focus}
-              customTextStyle={styles.textInput}
-              placeholder={strings.PROFILE}
-              onChangeText={this.onChangeSearch}
-              themeColor={theme.apiTheme}
-              textStyle={{fontSize: 20, marginBottom: 0}}
-            />
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 5,
-                top: 10,
-                paddingHorizontal: 25,
-                paddingVertical: 20,
-              }}
-              onPress={() => this.searchUser()}>
-              <Image
-                source={imagePath.search}
-                style={{width: 45, height: 45}}
-              />
-            </TouchableOpacity>
-          </View>
+          {searchPeople ? 
+                      <View style={styles.searchBox}>
+                      <TextInputWithLabel
+                        label={strings.SEARCH_USER}
+                        value={searchString}
+                        onFocus={() => this.setState({focus: true})}
+                        onBlur={() => this.setState({focus: false})}
+                        active={focus}
+                        customTextStyle={styles.textInput}
+                        placeholder={strings.PROFILE}
+                        onChangeText={this.onChangeSearch}
+                        themeColor={theme.apiTheme}
+                        textStyle={{fontSize: 20, marginBottom: 0}}
+                      />
+                      <View
+                        style={{
+                          position: 'absolute',
+                          right: 5,
+                          top: 10,
+                          paddingHorizontal: 25,
+                          paddingVertical: 20,
+                        }}>
+                          {isLoading && 
+                        <ActivityIndicator color={theme.apiTheme} size="large" />}
+                      </View>
+                    </View>
+           : 
+           <View style={styles.searchBox}
+           >
+<Button
+onPress = {this.searchNearbyUsers}
+            label={en.NEARBY_USERS}
+            styleText={{fontWeight: 'bold', color: theme.themeCard}}
+            styleButton={{
+              backgroundColor: theme.apiTheme,
+              paddingHorizontal: 25,
+              paddingVertical: 15,
+              borderRadius: 5,
+              marginVertical: 15
+            }}
+          />
+           </View>
+
+          }
+
 
           <FlatList
             data={profile}
@@ -157,7 +203,7 @@ class SearchPage extends Component {
             renderItem={this.renderItem}
           />
         </View>
-        <Loader isLoading={isLoading} />
+        {/* <Loader isLoading={isLoading} /> */}
       </View>
     );
   }
