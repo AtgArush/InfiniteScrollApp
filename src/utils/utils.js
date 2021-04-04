@@ -1,9 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {PermissionsAndroid, Platform} from 'react-native';
 import store from '../redux/store';
 import types from '../redux/types';
-import {showError} from './helperFunctions';
 
 export async function getHeaders() {
   // alert("HEADER")
@@ -95,16 +93,16 @@ export async function apiReq(
       .catch((error) => {
         
         console.log(error);
-        // console.log(error && error.response, 'the error respne');
-        // if (error && error.response && error.response.status === 401) {
-        //   const {dispatch} = store;
-        //   dispatch({
-        //     type: types.CLEAR_REDUX_STATE,
-        //     payload: {},
-        //   });
+        console.log(error && error.response, 'the error respne');
+        if (error && error.response && error.response.status === 401) {
+          const {dispatch} = store;
+          dispatch({
+            type: types.CLEAR_REDUX_STATE,
+            payload: {},
+          });
 
-        //   clearUserData();
-        // }
+          clearUserData();
+        }
         if (error && error.response && error.response.data) {
           if (!error.response.data.message) {
             return rej({

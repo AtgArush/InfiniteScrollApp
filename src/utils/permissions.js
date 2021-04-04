@@ -1,5 +1,34 @@
 import {PermissionsAndroid, Platform, Alert} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import messaging from '@react-native-firebase/messaging';
+
+export const requestUserPermission = async () => {
+  // const token = await messaging().getToken()
+  // alert();
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    // alert('Enabled');
+    getToken();
+  }
+};
+
+//dfunc >> token >>
+const getToken = async () => {
+  let token = await messaging().getToken();
+  try {
+    if (token) {
+      console.log(token);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  // alert(token);
+};
+
 export const androidCameraPermission = () =>
   new Promise(async (resolve, reject) => {
     try {
@@ -65,10 +94,8 @@ export const locationPermission = () => new Promise(async (resolve, reject) => {
   )
     .then(granted => {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        //console.log('You can use the location');
         return resolve('granted');
       }
-      //console.log('Location permission denied');
       return reject('Location Permission denied');
     })
     .catch(error => {

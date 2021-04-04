@@ -33,6 +33,7 @@ const TextInputWithLabel = ({
   ...rest
 }) => {
   let currentColor = active ? themeColor : colors.textGrey;
+  console.log(rest);
   return (
     <View style={{marginBottom: moderateScaleVertical(15)}}>
       <Text

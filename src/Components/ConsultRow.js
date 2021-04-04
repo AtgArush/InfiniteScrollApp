@@ -7,7 +7,7 @@ import Button from './Button';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function ConsultRow({item = {}, key, colors, theme}) {
+export default function ConsultRow({item = {}, id, colors, theme}) {
   return (
     <View
       style={{
@@ -16,7 +16,7 @@ export default function ConsultRow({item = {}, key, colors, theme}) {
         marginHorizontal: 15,
         borderRadius: 15
       }}
-      key={key}>
+      key={id}>
       <View
         style={{
           flexDirection: 'row',

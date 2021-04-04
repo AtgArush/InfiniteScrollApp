@@ -14,18 +14,15 @@ export const Login = data => {
     return new Promise((resolve, reject) => {
         apiPost( "https://api.talktier.com/user/v1/loginSignupOtp", data)
         .then((res)=>{
-            console.log(res, "Auth")
             resolve(res)
         })
         .catch((error)=>{
-            console.log(error, "Auth")
             reject(error)
         })
     })
 }
 
 export const logout = () => {
-  alert();;
     clearUserData();
   dispatch({
     type: types.LOGOUT,
@@ -37,15 +34,12 @@ export const verifyOtp = data => {
     return new Promise((resolve, reject) => {
         apiPost("https://api.talktier.com/user/v1/verifyOtp", data)
         .then((res)=>{
-            console.log(res, "OTP");
             setUserData(res.data)
             .then((suc)=>{
-                console.log("USERDATA SET")
                 saveUserData(res.data)
                 resolve(res.data)
             })
             .catch((error)=>{
-                console.log("USERDATA NOT SET")
                 reject(error)
             })
         })

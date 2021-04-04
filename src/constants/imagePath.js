@@ -15,4 +15,7 @@ export default {
   search: require('../assets/images/searchTab.png'),
   location: require('../assets/images/location.png'),
   tickIcon: require('../assets/images/tick.png'),
+  matriOne: require('../assets/images/matriOne.png'),
+  matriTwo: require('../assets/images/matriTwo.png'),
+  matriThree: require('../assets/images/matriThree.png'),
 };

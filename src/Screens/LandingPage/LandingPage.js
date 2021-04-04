@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Dimensions, StyleSheet, SafeAreaView, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { Text, View, Dimensions, StyleSheet, SafeAreaView, Image, TouchableOpacity, Modal } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import imagePath from '../../constants/imagePath';
 import navigationStrings from '../../constants/navigationStrings';
@@ -19,16 +19,16 @@ class LandingPage extends Component {
     activeIndex:0,
     carouselItems: [
         {
-            image: imagePath.carouselOne,
-            text: string.CAROUSEL_TEXT_ONE
+            image: imagePath.matriOne,
+            text: string.MATRI_ONE
         },
         {
-            image: imagePath.carouselTwo,
-            text: string.CAROUSEL_TEXT_TWO
+            image: imagePath.matriTwo,
+            text: string.MATRI_TWO
         },
         {
-            image: imagePath.carouselThree,
-            text: string.CAROUSEL_TEXT_THREE
+            image: imagePath.matriThree,
+            text: string.MATRI_THREE
         },
         {
             image: imagePath.homePage,
@@ -36,7 +36,9 @@ class LandingPage extends Component {
         }
   ],
   theme: "",
-  styles: {}
+  styles: {},
+  modalVisible: false,
+  themeColors: ['red', 'yellow', 'blue', 'green'],
   }
 
 
@@ -46,21 +48,34 @@ class LandingPage extends Component {
     let {styles} = this.state
       if (index == 3) {
         return (
-            <ImageBackground style = {styles.box} source = {imagePath.homePage}>
-                {/* <Text>ABCD</Text> */}
-                <View style = {styles.buttonContainer}>
-                    <TouchableOpacity style = {styles.button}
-                    onPress = {()=> this.props.navigation.navigate(navigationStrings.SIGNUP)}
-                    >
-                        <Text style = {styles.bottonButtonTextTwo}>{string.SIGNUP}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style = {styles.button}
-                    onPress = {()=> this.props.navigation.navigate(navigationStrings.LOGIN)}
-                    >
-                        <Text style = {styles.bottonButtonTextTwo}>{string.LOGIN}</Text>
-                    </TouchableOpacity>
+            <View style = {styles.box} >
+                <View style = {{flex: 0.4, justifyContent: "flex-end", alignItems: "center"}}>
+                  {/* <Text>ABCD</Text> */}
+
+                  <Text
+              style={styles.navbarHeadOne}>
+              TRU
+              <Text
+                style={styles.navbarHeadTwo}>
+                EL
+              </Text>
+              OVE
+            </Text>
+
                 </View>
-            </ImageBackground>
+                   <View style = {styles.buttonContainer}>
+                     <TouchableOpacity style = {styles.button}
+                     onPress = {()=> this.props.navigation.navigate(navigationStrings.LOGIN)}
+                     >
+                         <Text style = {styles.bottonButtonTextTwo}>{string.SIGNUP}</Text>
+                     </TouchableOpacity>
+                     <TouchableOpacity style = {styles.button}
+                     onPress = {()=> this.props.navigation.navigate(navigationStrings.LOGIN)}
+                     >
+                         <Text style = {styles.bottonButtonTextTwo}>{string.LOGIN}</Text>
+                     </TouchableOpacity>
+                 </View>
+            </View>
         )}
     return (
       <View style={styles.carouselItem}>
@@ -86,9 +101,6 @@ class LandingPage extends Component {
     )
 }
 
-changeTheme = () => {
-  actions.changeTheme(this.state.theme)
-}
 
 get pagination () {
     const { activeIndex, carouselItems } = this.state;
@@ -115,18 +127,20 @@ componentDidMount(){
 }
 
 componentDidUpdate(){
-  console.log(this.state.styles, this.state.theme, "current")
-  console.log(this.props.state.theme, this.props.state.currentTheme, "updated")
   if (this.state.theme != this.props.state.currentTheme) {
     // alert(changeTheme)
   this.setState({styles: myStyles(this.props.state.theme), theme: this.props.state.currentTheme})
   }
 }
 
+toggleTheme = color => {
+  this.setState({modalVisible: false})
+  actions.changeTheme(color);
+};
+
 render() {
-    let {activeIndex, styles} = this.state
+    let {activeIndex, styles, modalVisible, themeColors} = this.state
     let {navigation} = this.props
-    // console.log(styles().outerContainer, "?//////////////")
     // let styles = pageStyles()
     return (
         <SafeAreaView style={styles.outerContainer}>
@@ -142,14 +156,9 @@ render() {
                { activeIndex != 3 ? (
                    <>
                    {this.pagination}
-                   {/* <TouchableOpacity style = {styles.bottomButton} 
-                   onPress = {()=>this.changeTheme()}
-                   >
-                   <Text style = {styles.bottonButtonText}>{string.CHANGE_THEME}</Text>
-               </TouchableOpacity>                        */}
-               <Button 
+              <Button 
                label = {string.CHANGE_THEME}
-               onPress = {()=>this.changeTheme()}
+               onPress = {() => this.setState({modalVisible: true})}
                styleButton = {styles.bottomButton}
                styleText = {styles.bottonButtonText}
                />
@@ -157,6 +166,55 @@ render() {
                    ) : <></> }
 
         </View>
+        <Modal
+            animationType="slide"
+            visible={modalVisible}
+            onRequestClose={() => {
+              this.setState({modalVisible: false});
+            }}>
+            <View
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                height: '100%',
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{fontSize: 25, fontWeight: 'bold', color: '#fff'}}>
+                Choose your theme
+              </Text>
+              <View
+                style={{
+                  width: '70%',
+                  height: '40%',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}>
+                {themeColors.map((themeColor, key) => {
+                  let {theme} = this.state
+                  return (
+                    <TouchableOpacity
+                    key = {key}
+                      style={{
+                        width: '45%',
+                        height: '40%',
+                        backgroundColor: themeColor,
+                        marginTop: '10%',
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      onPress={() =>
+                        this.toggleTheme(themeColor)
+                      }>
+                        {theme == themeColor && <Image source = {imagePath.tickIcon} style = {{height: 50, width: 50}} />}
+                      </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          </Modal>
       </SafeAreaView>
     )
 }

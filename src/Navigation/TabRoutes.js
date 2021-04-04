@@ -48,13 +48,6 @@ function TabRoutes(props) {
         )
       }}
       />
-      <Tab.Screen name={navigationStrings.TAB_THREE} component={Empty} 
-      options = {{
-        tabBarLabel:"NEAR ME" , 
-        tabBarIcon:({focused})=>(  
-          <Image source = {imagePath.location} style = {[{height: 28, width: 32}, focused ? {tintColor: "#fff"} : {tintColor: apiTheme}]} />
-        )
-      }}      />
       <Tab.Screen name={navigationStrings.SEARCH_PAGE} component={SearchPage} 
       options = {{
         tabBarLabel:"SEARCH" , 
@@ -63,6 +56,13 @@ function TabRoutes(props) {
         )
       }}
       />
+      <Tab.Screen name={navigationStrings.TAB_THREE} component={Empty} 
+      options = {{
+        tabBarLabel:"EMPTY" , 
+        tabBarIcon:({focused})=>(  
+          <Image source = {imagePath.location} style = {[{height: 28, width: 32}, focused ? {tintColor: "#fff"} : {tintColor: apiTheme}]} />
+        )
+      }}      />
     </Tab.Navigator>
   );
 }

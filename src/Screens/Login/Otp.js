@@ -13,7 +13,9 @@ import styles from "./styles"
 import string from "../../constants/lang/en"
 import { getUserData } from '../../utils/utils';
 import Button from '../../Components/Button';
-export default class Login extends Component {
+import { connect } from 'react-redux';
+import myStyles from "./styles"
+class Otp extends Component {
 
     constructor(props) {
         super(props);
@@ -21,10 +23,26 @@ export default class Login extends Component {
           password: '',
           login: false,
           isLoading: false,
-          focus: false
+          focus: false,
+          theme: "",
+          styles: {},
         };
       }
     
+      componentDidMount(){
+        console.log(this.props.theme)
+        this.setState({styles: myStyles(this.props.theme.theme), theme: this.props.theme.currentTheme})
+      }
+      
+      componentDidUpdate(){
+        // console.log(this.state.styles, this.state.theme, "current")
+        // console.log(this.props.theme.theme, this.props.theme.currentTheme, "updated")
+        if (this.state.theme != this.props.theme.currentTheme) {
+          // alert(changeTheme)
+        this.setState({styles: myStyles(this.props.theme.theme), theme: this.props.theme.currentTheme})
+        }
+      }
+
       onChangeText = () => {
         return (value) => {
           this.setState({password: value}, ()=>{
@@ -63,7 +81,9 @@ export default class Login extends Component {
     
       render() {
         let username = this.props.route.params.name;
-        let {isLoading} = this.state;
+        let {isLoading, styles} = this.state;
+    let {theme} = this.props.theme
+
         console.log(this.props)
           return (
             <View style={{flex: 1}}>
@@ -90,7 +110,7 @@ export default class Login extends Component {
             </View>
             <View style={{height: 580}}>
               <View style = {styles.textBox}>
-              <TextInputWithLabel
+              {/* <TextInputWithLabel
                 label={string.OTP_LABEL}
                 value={this.state.password}
                 onFocus={() => this.setState({focus: true})}
@@ -100,8 +120,22 @@ export default class Login extends Component {
                 placeholder = {string.OTP_PLACEHOLDER}
                 onChangeText = {this.onChangeText()}
                 secureTextEntry = {true}
-              />
-  
+              themeColor = {theme.apiTheme}
+              keyboardType="number-pad"
+              /> */}
+  <TextInputWithLabel
+              label={string.OTP_LABEL}
+              value={this.state.password}
+              onFocus={() => this.setState({focus: true})}
+              onBlur={() => this.setState({focus: false})}
+              active={this.state.focus}
+              customTextStyle={styles.textInput}
+              placeholder={string.OTP_PLACEHOLDER}
+              onChangeText={this.onChangeText()}
+              themeColor = {theme.apiTheme}
+              keyboardType="number-pad"
+              secureTextEntry = {true}
+            />
               </View>
               <View style={styles.forgotButton}>
                 <Text style={styles.forgotText}>{string.FORGOT_PASSWORD}</Text>
@@ -146,3 +180,10 @@ export default class Login extends Component {
           );
         }
 }
+
+
+const mapStateToProps = ({theme}) => ({
+  theme: theme
+})
+
+export default connect(mapStateToProps)(Otp)

@@ -31,7 +31,6 @@ class Home extends Component {
 
   componentDidMount() {
     // alert()
-    console.log(this.state);
     this.apiCall();
   }
 
@@ -44,7 +43,6 @@ class Home extends Component {
           modalVisible: false,
         },
         () => {
-          console.log(this.state.theme, 'home');
         },
       );
     }
@@ -59,7 +57,6 @@ class Home extends Component {
     actions
       .loadData({skip: skip})
       .then(res => {
-        console.log(res);
         if (res.data.length > 0) {
           let profilesData = endCall ? [...profile, ...res.data] : res.data;
           this.setState(
@@ -67,10 +64,7 @@ class Home extends Component {
               profile: profilesData,
               isLoading: false,
               isRefreshing: false,
-            },
-            () => {
-              console.log(this.state);
-            },
+            }
           );
           // updatedStateVar = {
           // };
@@ -80,16 +74,12 @@ class Home extends Component {
               isNoMoreData: true,
               isLoading: false,
               isRefreshing: false,
-            },
-            () => {
-              console.log(this.state);
-            },
+            }
           );
         }
       })
       .catch(error => {
         // alert("Catch")
-        console.log(error);
         this.setState({isLoading: false, isRefreshing: false});
       });
   };
@@ -97,7 +87,7 @@ class Home extends Component {
   renderItem = ({item, index}) => {
     return (
       <ConsultRow
-        key={index}
+        id={index}
         item={item}
         colors={this.props.theme.theme}
         theme={this.state.theme}
@@ -117,20 +107,14 @@ class Home extends Component {
   onRefresh = () => {
     this.setState({isRefreshing: true, isNoMoreData: false});
     this.apiCall();
-    // actions.fetchData().then(res => {
-    //   this.setState({isRefreshing: false});
-    // });
   };
 
   renderFooter = () => {
     let {isLoading} = this.state;
     let {apiTheme} = this.props.theme.theme;
-    console.log(apiTheme, 'Footer');
     if (isLoading) {
       return (
         <View style={{paddingBottom: 40}}>
-          {/* <MaterialIndicator color={colors.themeGreen} />
-           */}
           <ActivityIndicator color={apiTheme} size="large" />
         </View>
       );
@@ -144,11 +128,9 @@ class Home extends Component {
   };
 
   renderImage = () => {
-    console.log(this.state.theme, 'image');
     let {styles} = this.state;
     switch (this.state.theme) {
       case 'red':
-        console.log(this.state.theme);
         return (
           <TouchableOpacity onPress={() => actions.logout()}>
             <Image
@@ -159,7 +141,6 @@ class Home extends Component {
           </TouchableOpacity>
         );
       case 'blue':
-        console.log(this.state.theme);
         return (
           <TouchableOpacity onPress={() => actions.logout()}>
             <Image
@@ -171,7 +152,6 @@ class Home extends Component {
         );
 
       case 'yellow':
-        console.log(this.state.theme);
         return (
           <TouchableOpacity onPress={() => actions.logout()}>
             <Image
@@ -182,7 +162,6 @@ class Home extends Component {
           </TouchableOpacity>
         );
       case 'green':
-        console.log(this.state.theme);
         return (
           <TouchableOpacity onPress={() => actions.logout()}>
             <Image
@@ -245,7 +224,7 @@ class Home extends Component {
                   flexDirection: 'row',
                   flexWrap: 'wrap',
                 }}>
-                {themeColors.map(themeColor => {
+                {themeColors.map((themeColor, key) => {
                   let {theme} = this.state
                   return (
                     <TouchableOpacity
@@ -257,6 +236,7 @@ class Home extends Component {
                         justifyContent: "center",
                         alignItems: "center"
                       }}
+                      key={key}
                       onPress={() =>
                         this.toggleTheme(themeColor)
                       }>

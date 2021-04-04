@@ -62,6 +62,21 @@ const styles = props => {
       marginHorizontal: 10,
       borderRadius: 10,
       marginBottom: 15,
+      paddingTop: 10,
+    },
+    nearbyUsersButton: {
+      backgroundColor: colors.apiTheme,
+      paddingHorizontal: 25,
+      paddingVertical: 15,
+      borderRadius: 5,
+      marginVertical: 15,
+    },
+    loaderBox: {
+      position: 'absolute',
+      right: 5,
+      top: 10,
+      paddingHorizontal: 25,
+      paddingVertical: 20,
     },
   });
 };

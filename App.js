@@ -3,37 +3,26 @@ import { Provider } from 'react-redux'
 import Routes from './src/Navigation/Routes'
 import actions from './src/redux/actions'
 import store from "./src/redux/store"
-import { getUserData } from './src/utils/utils'
-import Loader from "./src/Components/Loader"
-import { StatusBar } from 'react-native'
+import {getUserData} from './src/utils/utils';
 import SplashScreen from 'react-native-splash-screen'
+import {requestUserPermission} from './src/utils/permissions';
 
 export default class App extends Component {
-
-  // componentDidMount(){
-  //   getUserData()
-  //   .then((res)=>{
-  //     console.log(res, "App")
-  //     actions.saveUserData(res)
-  //   })
-  // }
-
-  componentDidMount()  {
+  componentDidMount() {
     getUserData()
-    .then((res)=> {
-      actions.saveUserData(res);
-      // setTimeout(() => {
+      .then(res => {
+        actions.saveUserData(res);
         SplashScreen.hide();
-      // }, 1000);
-    })
-    .catch((error)=>console.log(error))
+        requestUserPermission();
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
     return (
-      <Provider store = {store}>
+      <Provider store={store}>
         <Routes />
       </Provider>
-    )
+    );
   }
 }

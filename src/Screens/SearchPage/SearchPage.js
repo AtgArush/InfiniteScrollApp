@@ -29,21 +29,16 @@ class SearchPage extends Component {
     profile: [],
     searchString: '',
     focus: false,
-    searchPeople: false
+    searchByName: false
   };
 
   componentDidUpdate() {
     if (this.state.theme != this.props.theme.currentTheme) {
-      this.setState(
-        {
+      this.setState({
           styles: myStyles(this.props.theme.theme),
           theme: this.props.theme.currentTheme,
           modalVisible: false,
-        },
-        () => {
-          console.log(this.state.theme, 'home');
-        },
-      );
+        });
     }
   }
 
@@ -74,12 +69,10 @@ class SearchPage extends Component {
     actions
       .searchUser(searchString)
       .then(res => {
-        console.log(res);
         this.setState({profile: res.data, isLoading: false});
       })
       .catch(error => {
         this.setState({isLoading: false});
-        console.log(error);
       });
   };
 
@@ -88,25 +81,21 @@ class SearchPage extends Component {
     locationPermission()
     .then((res)=>{
       if (res === "granted") {
-        // alert("granted")
               Geolocation.getCurrentPosition(
           (position) => {
             let {longitude, latitude} = position.coords
-            console.log(longitude, latitude);
+            this.setState({isLoading: true})
             searchNearbyUser(longitude, latitude)
             .then((res)=>{
-              console.log(res)
-              this.setState({profile: res.data})
+              this.setState({profile: res.data, isLoading: false})
             })
           },
           (error) => {
-            // See error code charts below.
             console.log(error.code, error.message);
           },
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
       }
-      console.log(res)
     })
     .catch((error)=>{
       console.log(error)
@@ -120,7 +109,7 @@ class SearchPage extends Component {
       searchString,
       focus,
       isLoading,
-      searchPeople
+      searchByName
     } = this.state;
     let {theme} = this.props.theme;
     return (
@@ -137,12 +126,9 @@ class SearchPage extends Component {
           <Text style={styles.navbarTopText}> {strings.SEARCH_USER} </Text>
 
           <TouchableOpacity style={{height:50, width: 50, position: "absolute", right: 20, justifyContent:"center", alignItems:"center"}}
-          onPress={()=> this.setState({searchPeople: !searchPeople, profile: []})}
+          onPress={()=> this.setState({searchByName: !searchByName, profile: []})}
           >
-            {/* <Text>ABCD</Text> */}
-            {/* {this.renderImage()} */}
-            {/* <Text>{searchPeople ? "Nearby users" : "search users"}</Text> */}
-            {searchPeople ? 
+            {searchByName ? 
             <Image style = {styles.toggleImage} source = {imagePath.location} /> : 
             <Image style = {styles.toggleImage} source = {imagePath.search} />
             }
@@ -150,7 +136,7 @@ class SearchPage extends Component {
         </View>
 
         <View style={styles.bodyContainer}>
-          {searchPeople ? 
+          {searchByName ? 
                       <View style={styles.searchBox}>
                       <TextInputWithLabel
                         label={strings.SEARCH_USER}
@@ -165,13 +151,7 @@ class SearchPage extends Component {
                         textStyle={{fontSize: 20, marginBottom: 0}}
                       />
                       <View
-                        style={{
-                          position: 'absolute',
-                          right: 5,
-                          top: 10,
-                          paddingHorizontal: 25,
-                          paddingVertical: 20,
-                        }}>
+                        style={styles.loaderBox}>
                           {isLoading && 
                         <ActivityIndicator color={theme.apiTheme} size="large" />}
                       </View>
@@ -183,14 +163,16 @@ class SearchPage extends Component {
 onPress = {this.searchNearbyUsers}
             label={en.NEARBY_USERS}
             styleText={{fontWeight: 'bold', color: theme.themeCard}}
-            styleButton={{
-              backgroundColor: theme.apiTheme,
-              paddingHorizontal: 25,
-              paddingVertical: 15,
-              borderRadius: 5,
-              marginVertical: 15
-            }}
+            styleButton={
+              styles.nearbyUsersButton
+            }
           />
+                                <View
+                        style={[styles.loaderBox]}
+                        >
+                          {isLoading && 
+                        <ActivityIndicator color={theme.white} size="large" />}
+                      </View>
            </View>
 
           }
@@ -203,6 +185,7 @@ onPress = {this.searchNearbyUsers}
             renderItem={this.renderItem}
           />
         </View>
+        {/* {!searchByName && <Loader isLoading = {isLoading} /> } */}
         {/* <Loader isLoading={isLoading} /> */}
       </View>
     );

@@ -1,4 +1,4 @@
-export const lightTheme ={
+export const lightTheme = {
   themeColor: '#45c9cb',
   white: '#FFFFFF',
   whiteBtnText: '#0d9996',
@@ -7,12 +7,13 @@ export const lightTheme ={
   textGrey: '#777',
   apiTheme: '#f8464b',
   black: '#000',
-  theme: "#fff",
-  themeText: "#222",
-  themeCard: "#fff",
-  themeTwo: "#f0f4f7",
-  taskBar: "#fff",
-  barText: "#222"
+  theme: '#fff',
+  themeText: '#222',
+  themeCard: '#fff',
+  themeTwo: '#f0f4f7',
+  taskBar: '#fff',
+  barText: '#222',
+  bgColor: 'red',
 };
 
 export const darkTheme ={

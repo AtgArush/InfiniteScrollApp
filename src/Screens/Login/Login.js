@@ -17,7 +17,9 @@ import Loader from '../../Components/Loader';
 import {showMessage} from 'react-native-flash-message';
 import string from '../../constants/lang/en';
 import Button from '../../Components/Button';
-export default class Login extends Component {
+import { connect } from 'react-redux';
+import myStyles from "./styles"
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +27,23 @@ export default class Login extends Component {
       login: false,
       focus: false,
       loading: false,
+      theme: "",
+      styles: {},
     };
+  }
+
+  componentDidMount(){
+    console.log(this.props.theme)
+    this.setState({styles: myStyles(this.props.theme.theme), theme: this.props.theme.currentTheme})
+  }
+  
+  componentDidUpdate(){
+    // console.log(this.state.styles, this.state.theme, "current")
+    // console.log(this.props.theme.theme, this.props.theme.currentTheme, "updated")
+    if (this.state.theme != this.props.theme.currentTheme) {
+      // alert(changeTheme)
+    this.setState({styles: myStyles(this.props.theme.theme), theme: this.props.theme.currentTheme})
+    }
   }
 
   onChangeText = () => {
@@ -74,7 +92,8 @@ export default class Login extends Component {
 
   render() {
     let {navigation} = this.props;
-
+    let {styles} = this.state
+    let {theme} = this.props.theme
     return (
       <ScrollView style={{flex: 1}}>
         <View style={styles.topBar}>
@@ -106,38 +125,29 @@ export default class Login extends Component {
               customTextStyle={styles.textInput}
               placeholder={string.PLACEHOLDER_PHONE}
               onChangeText={this.onChangeText()}
+              themeColor = {theme.apiTheme}
+              keyboardType="number-pad"
             />
           </View>
           <View style={styles.forgotButton}>
             <Text style={styles.forgotText}>{string.FORGOT}</Text>
           </View>
           <View style={styles.loginButton}>
-            {/* <TouchableOpacity
-              style={{alignItems: 'center'}}
-              onPress={() => this.loginClicked()}>
-              <Text style={styles.loginText}>{string.NEXT}</Text>
-            </TouchableOpacity> */}
             <Button
               onPress={() => this.loginClicked()}
-              styleButton={{alignItems: "center"}}
+              styleButton={{alignItems: 'center'}}
               styleText={styles.loginText}
-              label = {string.NEXT}
+              label={string.NEXT}
             />
           </View>
           <View style={styles.signUpButton}>
             <Text style={{marginBottom: 15}}>
               {string.LOGIN_TO_SIGNUP_TEXT}
             </Text>
-            {/* <TouchableOpacity
-                style={styles.signup}
-                onPress={() => navigation.navigate(navigationStrings.SIGNUP)}>
-                <Text style={styles.signupText}>{string.CREATE_ACCOUNT}</Text>
-              </TouchableOpacity> */}
             <Button
-              onPress={() => navigation.navigate(navigationStrings.SIGNUP)}
               styleButton={styles.signup}
               styleText={styles.signupText}
-              label = {string.CREATE_ACCOUNT}
+              label={string.CREATE_ACCOUNT}
             />
           </View>
         </View>
@@ -146,3 +156,9 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = ({theme}) => ({
+  theme: theme
+})
+
+export default connect(mapStateToProps)(Login)
