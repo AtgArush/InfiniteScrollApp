@@ -16,6 +16,9 @@ import {connect} from 'react-redux';
 import ConsultRow from '../../Components/ConsultRow';
 import strings from '../../constants/lang/en';
 import styles from '../Login/styles';
+import navigationStrings from '../../constants/navigationStrings';
+import Header from '../../Components/Header';
+import Button from '../../Components/Button';
 
 class Home extends Component {
   state = {
@@ -178,82 +181,83 @@ class Home extends Component {
   };
 
   render() {
-    // let {cardList} = this.props.data;
+    let {navigation} = this.props;
     let {
       styles,
       profile,
       modalVisible,
       themeColors,
+      theme
     } = this.state;
     return (
       <View style={{flex: 1}}>
-        <View style={styles.navbar}>
-          <TouchableOpacity
-            style={styles.imageBox}
-            onPress={() => this.setState({modalVisible: true})}>
-            <Image
-              source={imagePath.hamburgerIcon}
-              style={styles.navbarLeftImage}
-            />
-          </TouchableOpacity>
-          <Text style={styles.navbarTopText}> {strings.CONSULT} </Text>
-
-          <Modal
-            animationType="slide"
-            visible={modalVisible}
-            onRequestClose={() => {
-              this.setState({modalVisible: false});
+              <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => {
+          setmodalVisible(true);
+        }}>
+        <View
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            height: '100%',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 25, fontWeight: 'bold', color: '#fff'}}>
+            {strings.THEME}
+          </Text>
+          <View
+            style={{
+              width: '70%',
+              height: '40%',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
             }}>
-            <View
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                height: '100%',
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{fontSize: 25, fontWeight: 'bold', color: '#fff'}}>
-                Choose your theme
-              </Text>
-              <View
-                style={{
-                  width: '70%',
-                  height: '40%',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                }}>
-                {themeColors.map((themeColor, key) => {
-                  let {theme} = this.state
-                  return (
-                    <TouchableOpacity
-                      style={{
-                        width: '45%',
-                        height: '40%',
-                        backgroundColor: themeColor,
-                        marginTop: '10%',
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                      key={key}
-                      onPress={() =>
-                        this.toggleTheme(themeColor)
-                      }>
-                        {theme == themeColor && <Image source = {imagePath.tickIcon} style = {{height: 50, width: 50}} />}
-                      </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-          </Modal>
-          <View style={styles.themeToggleBox}>
-            {/* <Text>ABCD</Text> */}
-            {this.renderImage()}
+            {themeColors.map((themeColor, key) => {
+              // let {theme} = this.state;
+              return (
+                <TouchableOpacity
+                  style={{
+                    width: '45%',
+                    height: '40%',
+                    backgroundColor: themeColor,
+                    marginTop: '10%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  key={key}
+                  onPress={() => this.toggleTheme(themeColor)}>
+                  {theme == themeColor && (
+                    <Image
+                      source={imagePath.tickIcon}
+                      style={{height: 50, width: 50}}
+                    />
+                  )}
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
-
+      </Modal>
+        <Header 
+        styles = {styles}
+        toggleTheme = {this.toggleTheme}
+        theme = {theme}
+        renderImage = {this.renderImage}
+        title = "CONSULT"
+        />
         <View style={[styles.bodyContainer, {paddingTop: 15}]}>
+          {/* <Button /> */}
+          <Button 
+               label = {strings.CHANGE_THEME}
+               onPress = {() => this.setState({modalVisible: true})}
+               styleButton = {styles.bottomButton}
+               styleText = {styles.bottonButtonText}
+               />
           <FlatList
             data={profile}
             showsVerticalScrollIndicator={false}

@@ -34,4 +34,5 @@ export default {
   MATRI_ONE: 'Find you true love',
   MATRI_TWO: 'And take it beyond',
   MATRI_THREE: 'With us, at True Love',
+  THEME: 'Choose your theme',
 };

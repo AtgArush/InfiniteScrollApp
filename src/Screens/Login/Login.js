@@ -2,16 +2,11 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  StyleSheet,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import TextInputWithLabel from '../../Components/TextInputWithLabel';
 import navigationStrings from '../../constants/navigationStrings';
-import colors from '../../styles/colors';
-import styles from './styles';
 import actions from '../../redux/actions';
 import Loader from '../../Components/Loader';
 import {showMessage} from 'react-native-flash-message';
@@ -19,6 +14,10 @@ import string from '../../constants/lang/en';
 import Button from '../../Components/Button';
 import { connect } from 'react-redux';
 import myStyles from "./styles"
+import { LoginButton, AccessToken } from 'react-native-fbsdk';
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+GoogleSignin.configure();
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -90,6 +89,17 @@ class Login extends Component {
     }
   };
 
+  signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      // this.setState({ userInfo });
+      console.log(userInfo)
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   render() {
     let {navigation} = this.props;
     let {styles} = this.state
@@ -144,11 +154,37 @@ class Login extends Component {
             <Text style={{marginBottom: 15}}>
               {string.LOGIN_TO_SIGNUP_TEXT}
             </Text>
-            <Button
+            {/* <Button
               styleButton={styles.signup}
               styleText={styles.signupText}
               label={string.CREATE_ACCOUNT}
-            />
+            /> */}
+            <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              // alert()
+              console.log(error, result)
+
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString())
+                  }
+                )
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout.")}/>
+          <TouchableOpacity
+          onPress = {this.signIn}
+          >
+            <Text>Google</Text>
+          </TouchableOpacity>
+
           </View>
         </View>
         <Loader isLoading={this.state.loading} />

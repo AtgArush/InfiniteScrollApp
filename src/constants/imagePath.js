@@ -18,4 +18,7 @@ export default {
   matriOne: require('../assets/images/matriOne.png'),
   matriTwo: require('../assets/images/matriTwo.png'),
   matriThree: require('../assets/images/matriThree.png'),
+  profile: require('../assets/images/profile.png'),
+  charts: require('../assets/images/charts.png'),
+  empty: require('../assets/images/empty.png'),
 };

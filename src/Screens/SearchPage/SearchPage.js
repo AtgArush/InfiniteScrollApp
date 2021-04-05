@@ -20,6 +20,7 @@ import en from '../../constants/lang/en';
 import Geolocation from 'react-native-geolocation-service';
 import { locationPermission } from '../../utils/permissions';
 import { searchNearbyUser } from '../../redux/actions/consult';
+import Header from '../../Components/Header';
 
 class SearchPage extends Component {
   state = {
@@ -102,6 +103,33 @@ class SearchPage extends Component {
     })
   }
 
+  renderImage = () =>{
+    let {searchByName, styles} = this.state
+    if (searchByName) {
+      return(
+        <TouchableOpacity style={{height:50, width: 50, position: "absolute", right: 20, justifyContent:"center", alignItems:"center"}}
+        onPress={()=> this.setState({searchByName: !searchByName, profile: []})}
+        >
+        <Image style = {styles.toggleImage} source = {imagePath.location} />       
+        </TouchableOpacity>
+      )
+    }
+    else{
+      return(
+        <TouchableOpacity style={{height:50, width: 50, position: "absolute", right: 20, justifyContent:"center", alignItems:"center"}}
+        onPress={()=> this.setState({searchByName: !searchByName, profile: []})}
+        >
+        <Image style = {styles.toggleImage} source = {imagePath.search} />
+        </TouchableOpacity>
+      )
+    }
+  }
+  toggleTheme = color => {
+    // this.setState({})
+    actions.changeTheme(color);
+  };
+
+
   render() {
     let {
       styles,
@@ -114,7 +142,7 @@ class SearchPage extends Component {
     let {theme} = this.props.theme;
     return (
       <View style={{flex: 1}}>
-        <View style={styles.navbar}>
+        {/* <View style={styles.navbar}>
           <View
             style={styles.imageBox}
             onPress={() => this.setState({modalVisible: true})}>
@@ -124,17 +152,16 @@ class SearchPage extends Component {
             />
           </View>
           <Text style={styles.navbarTopText}> {strings.SEARCH_USER} </Text>
+          {this.renderImage()}
 
-          <TouchableOpacity style={{height:50, width: 50, position: "absolute", right: 20, justifyContent:"center", alignItems:"center"}}
-          onPress={()=> this.setState({searchByName: !searchByName, profile: []})}
-          >
-            {searchByName ? 
-            <Image style = {styles.toggleImage} source = {imagePath.location} /> : 
-            <Image style = {styles.toggleImage} source = {imagePath.search} />
-            }
-          </TouchableOpacity>
-        </View>
-
+        </View> */}
+<Header
+        styles = {styles}
+        toggleTheme = {this.toggleTheme}
+        theme = {theme}
+        renderImage = {this.renderImage}
+        title = "SEARCH USER"
+        />
         <View style={styles.bodyContainer}>
           {searchByName ? 
                       <View style={styles.searchBox}>

@@ -11,7 +11,6 @@ export const requestUserPermission = async () => {
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
   if (enabled) {
-    // alert('Enabled');
     getToken();
   }
 };

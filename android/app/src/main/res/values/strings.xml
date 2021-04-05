@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Infinite Scroll App</string>
+    <string name="facebook_app_id">483939332798326</string>
+    <string name = "Server_Client_Id">18279365582-p9jnvtjdl1ar7kbs792eembv608jna7m.apps.googleusercontent.com</string>
 </resources>
