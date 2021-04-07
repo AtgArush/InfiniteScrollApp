@@ -21,4 +21,7 @@ export default {
   profile: require('../assets/images/profile.png'),
   charts: require('../assets/images/charts.png'),
   empty: require('../assets/images/empty.png'),
+  profileImage: require('../assets/images/profileImage.jpeg'),
+  qr: require('../assets/images/qr.png'),
+  chats: require('../assets/images/chats.png'),
 };

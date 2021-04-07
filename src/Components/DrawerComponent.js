@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, StyleSheet, Image, Button} from 'react-native';
+import React, { useState } from 'react';
+import {View, StyleSheet, Image, Button, TouchableOpacity, Modal, Dimensions } from 'react-native';
 import {
   Avatar,
   Title,
@@ -14,17 +14,43 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import navigationStrings from '../constants/navigationStrings';
 import imagePath from '../constants/imagePath';
 import {useNavigation} from '@react-navigation/native';
+import ImageZoom from 'react-native-image-pan-zoom';
 
 export default function DrawerComponent(props) {
   const navigation = useNavigation();
+  const [modal, setmodal] = useState(false)
   //   const {navigation} = props;
   return (
     <View style={{flex: 1}}>
+      <Modal
+      animationType="slide"
+      visible={modal}
+      onRequestClose={() => {
+        setmodal(false);
+      }}>
+        <View style = {{width:"100%", height: "100%", backgroundColor: "rgba(0,0,0,0.6)", justifyContent: "center", alignItems: "center"}}>
+        <ImageZoom cropWidth={Dimensions.get('window').width}
+                       cropHeight={Dimensions.get('window').height}
+                       imageWidth={200}
+                       imageHeight={200}>
+                <Image style={{width:"100%", height:"100%", resizeMode: "contain"}}
+                       source={imagePath.profileImage}/>
+            </ImageZoom>
+        </View>
+      </Modal>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'row', marginTop: 15}}>
-              <Avatar.Image source={imagePath.profile} size={50} />
+              <TouchableOpacity
+              onPress = {()=> setmodal(true)}
+              >
+                <Image
+                  source={imagePath.profile}
+                  style={{height: 50, width: 50}}
+                />
+              </TouchableOpacity>
+              {/* <Avatar.Image source={imagePath.profile} size={50} /> */}
               <View style={{marginLeft: 15, flexDirection: 'column'}}>
                 <Title style={styles.title}>Arush Sharma</Title>
                 <Caption style={styles.caption}>atg041299@gmail.com</Caption>
@@ -81,6 +107,30 @@ export default function DrawerComponent(props) {
               label="Charts"
               onPress={() => {
                 navigation.navigate(navigationStrings.CHART);
+              }}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <Image
+                  style={{height: 30, width: 30}}
+                  source={imagePath.qr}
+                />
+              )}
+              label="QR Screen"
+              onPress={() => {
+                navigation.navigate(navigationStrings.QRCODE);
+              }}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <Image
+                  style={{height: 30, width: 30}}
+                  source={imagePath.chats}
+                />
+              )}
+              label="Chats"
+              onPress={() => {
+                navigation.navigate(navigationStrings.CHATS);
               }}
             />
           </Drawer.Section>

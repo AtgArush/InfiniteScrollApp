@@ -9,4 +9,6 @@ export default {
   NOTIFICATION: 'NOTIFICATION',
   DRAWER: 'DRAWER',
   CHART: 'CHART',
+  QRCODE: 'QRCODE',
+  CHATS: 'CHATS',
 };

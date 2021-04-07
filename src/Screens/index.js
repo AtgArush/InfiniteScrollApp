@@ -6,3 +6,5 @@ export {default as Home} from "./Home/Home"
 export {default as SearchPage} from './SearchPage/SearchPage';
 export {default as Notification} from './NotificationScreen/NotificationScreen';
 export {default as Charts} from './Charts/Charts';
+export {default as QRScreen} from './QRCode/Qrcode';
+export {default as Chats} from './ChatSystem/Chat';
